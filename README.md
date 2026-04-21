@@ -1,36 +1,50 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# PlumeCast™ 2026: Hybrid Intelligence Platform
 
-## Getting Started
+The tactical incident command platform for the modern era.
+**Status**: Phase 1 (Skeleton) Complete.
 
-First, run the development server:
+## 🚀 Quick Start
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### Prerequisites
+- Node.js 18+
+- Mapbox Public Token (Free)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Installation
+1.  Clone/Enter directory:
+    ```powershell
+    cd plumecast-2026
+    ```
+2.  Install dependencies:
+    ```powershell
+    npm install
+    ```
+3.  **Configure Environment**:
+    Create `.env.local` and add your Mapbox token:
+    ```properties
+    NEXT_PUBLIC_MAPBOX_TOKEN=pk.eyJ...
+    ```
+4.  Run Development Server:
+    ```powershell
+    npm run dev
+    ```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🏗️ Architecture
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Frontend (Next.js + Mapbox + Deck.gl)
+- **Framework**: Next.js 16 (App Router)
+- **Map Engine**: Mapbox GL JS (Standard Style / 3D Buildings)
+- **Visualization**: Deck.gl `MapboxOverlay` for high-performance geospatial rendering.
+- **UI**: Tailwind CSS + Framer Motion (Glassmorphism HUD).
 
-## Learn More
+### Backend (Coming Phase 2)
+- **Physics**: Rust (WASM) implementation of Gaussian Plume Model.
+- **AI**: Vercel AI SDK integration for ERG RAG agent.
 
-To learn more about Next.js, take a look at the following resources:
+## 📂 Project Structure
+- `/components/ui/plume-map.tsx`: Main 3D map view (Mapbox + Deck.gl).
+- `/components/ui/hud.tsx`: Tactical overlay (Wind, Alerts, Controls).
+- `/app`: Next.js App Router pages.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## ⚠️ Troubleshooting
+- **Map not loading?** Check your `NEXT_PUBLIC_MAPBOX_TOKEN` in `.env.local`.
+- **Build errors?** Ensure you are using `npm run build` which handles the transpilation of ESM modules.

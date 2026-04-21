@@ -1,26 +1,555 @@
-@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   PLUMECAST™ TACTICAL COMMAND INTERFACE
+   Aesthetic: Phosphor Command - Retro-Futuristic Military Display
+   ═══════════════════════════════════════════════════════════════════════════ */
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Primary Colors */
+  --phosphor-green: #00ff41;
+  --phosphor-green-dim: #00cc34;
+  --phosphor-green-glow: rgba(0, 255, 65, 0.4);
+
+  /* Alert Colors */
+  --alert-red: #ff0040;
+  --alert-red-glow: rgba(255, 0, 64, 0.5);
+  --alert-amber: #ff6b00;
+  --alert-amber-glow: rgba(255, 107, 0, 0.4);
+
+  /* Data Colors */
+  --data-cyan: #00d4ff;
+  --data-cyan-glow: rgba(0, 212, 255, 0.4);
+  --data-purple: #a855f7;
+  --data-purple-glow: rgba(168, 85, 247, 0.4);
+
+  /* Backgrounds */
+  --bg-void: #030508;
+  --bg-panel: rgba(8, 12, 18, 0.92);
+  --bg-panel-hover: rgba(12, 18, 26, 0.95);
+  --border-tactical: rgba(0, 255, 65, 0.15);
+  --border-tactical-strong: rgba(0, 255, 65, 0.3);
+
+  /* Typography */
+  --font-display: 'Orbitron', monospace;
+  --font-tactical: 'Rajdhani', sans-serif;
+  --font-data: 'JetBrains Mono', monospace;
+
+  /* Spacing */
+  --panel-radius: 4px;
+  --glow-spread: 20px;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+html, body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: var(--bg-void);
+  overscroll-behavior: none;
+  font-family: var(--font-tactical);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SCANLINE OVERLAY - CRT Authenticity
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.scanlines::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.15) 2px,
+    rgba(0, 0, 0, 0.15) 4px
+  );
+  animation: scanline-flicker 8s linear infinite;
+}
+
+.scanlines::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9998;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 0%,
+    rgba(0, 0, 0, 0.2) 80%,
+    rgba(0, 0, 0, 0.5) 100%
+  );
+}
+
+@keyframes scanline-flicker {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.98; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   TACTICAL PANEL STYLING
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.tactical-panel {
+  background: var(--bg-panel);
+  border: 1px solid var(--border-tactical);
+  border-radius: var(--panel-radius);
+  backdrop-filter: blur(20px);
+  position: relative;
+}
+
+.tactical-panel::before,
+.tactical-panel::after {
+  content: '';
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border: 2px solid var(--phosphor-green);
+  opacity: 0.6;
+}
+
+.tactical-panel::before {
+  top: -1px;
+  left: -1px;
+  border-right: none;
+  border-bottom: none;
+}
+
+.tactical-panel::after {
+  bottom: -1px;
+  right: -1px;
+  border-left: none;
+  border-top: none;
+}
+
+.tactical-panel-danger::before,
+.tactical-panel-danger::after {
+  border-color: var(--alert-red);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   GLOWING TEXT EFFECTS
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.glow-green {
+  color: var(--phosphor-green);
+  text-shadow:
+    0 0 5px var(--phosphor-green-glow),
+    0 0 10px var(--phosphor-green-glow),
+    0 0 20px var(--phosphor-green-glow);
+}
+
+.glow-cyan {
+  color: var(--data-cyan);
+  text-shadow:
+    0 0 5px var(--data-cyan-glow),
+    0 0 10px var(--data-cyan-glow),
+    0 0 20px var(--data-cyan-glow);
+}
+
+.glow-red {
+  color: var(--alert-red);
+  text-shadow:
+    0 0 5px var(--alert-red-glow),
+    0 0 10px var(--alert-red-glow),
+    0 0 20px var(--alert-red-glow);
+  animation: pulse-glow-red 2s ease-in-out infinite;
+}
+
+.glow-amber {
+  color: var(--alert-amber);
+  text-shadow:
+    0 0 5px var(--alert-amber-glow),
+    0 0 10px var(--alert-amber-glow);
+}
+
+.glow-purple {
+  color: var(--data-purple);
+  text-shadow:
+    0 0 5px var(--data-purple-glow),
+    0 0 10px var(--data-purple-glow);
+}
+
+@keyframes pulse-glow-red {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   RADAR SWEEP ANIMATION
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.radar-sweep {
+  position: relative;
+  overflow: hidden;
+}
+
+.radar-sweep::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    var(--phosphor-green-glow) 30deg,
+    transparent 60deg
+  );
+  animation: radar-rotate 4s linear infinite;
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+@keyframes radar-rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   STATUS INDICATORS
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.status-live {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.status-live::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--phosphor-green);
+  box-shadow: 0 0 10px var(--phosphor-green-glow);
+  animation: status-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes status-pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.6;
+  }
+}
+
+.status-alert::before {
+  background: var(--alert-red);
+  box-shadow: 0 0 10px var(--alert-red-glow);
+  animation: status-alert-pulse 0.5s ease-in-out infinite;
+}
+
+@keyframes status-alert-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   TACTICAL BUTTONS
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.btn-tactical {
+  font-family: var(--font-tactical);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 8px 16px;
+  background: transparent;
+  border: 1px solid var(--border-tactical-strong);
+  color: var(--phosphor-green);
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  position: relative;
+}
+
+.btn-tactical:hover {
+  background: rgba(0, 255, 65, 0.1);
+  border-color: var(--phosphor-green);
+  box-shadow:
+    0 0 10px var(--phosphor-green-glow),
+    inset 0 0 20px rgba(0, 255, 65, 0.05);
+}
+
+.btn-tactical:active {
+  transform: scale(0.98);
+}
+
+.btn-tactical-primary {
+  background: rgba(0, 255, 65, 0.15);
+  border-color: var(--phosphor-green);
+}
+
+.btn-tactical-danger {
+  border-color: rgba(255, 0, 64, 0.5);
+  color: var(--alert-red);
+}
+
+.btn-tactical-danger:hover {
+  background: rgba(255, 0, 64, 0.15);
+  border-color: var(--alert-red);
+  box-shadow: 0 0 10px var(--alert-red-glow);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   TACTICAL INPUT FIELDS
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.input-tactical {
+  font-family: var(--font-data);
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--border-tactical);
+  color: var(--phosphor-green);
+  padding: 10px 14px;
+  border-radius: 2px;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.input-tactical:focus {
+  border-color: var(--phosphor-green);
+  box-shadow:
+    0 0 10px var(--phosphor-green-glow),
+    inset 0 0 20px rgba(0, 255, 65, 0.03);
+}
+
+.input-tactical::placeholder {
+  color: rgba(0, 255, 65, 0.3);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   TACTICAL SELECT DROPDOWN
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+select.bg-black\/40,
+.select-tactical {
+  font-family: var(--font-tactical);
+  background-color: rgba(8, 12, 18, 0.95);
+  color: #e0e0e0;
+  cursor: pointer;
+}
+
+select.bg-black\/40 option,
+.select-tactical option {
+  background-color: #0a0e14;
+  color: #e0e0e0;
+  padding: 8px 12px;
+}
+
+select.bg-black\/40 option:hover,
+.select-tactical option:hover,
+select.bg-black\/40 option:checked,
+.select-tactical option:checked {
+  background-color: rgba(168, 85, 247, 0.3);
+  color: white;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   TACTICAL SLIDER
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.slider-tactical {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 4px;
+  background: rgba(0, 255, 65, 0.15);
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+}
+
+.slider-tactical::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  background: var(--bg-void);
+  border: 2px solid var(--phosphor-green);
+  border-radius: 2px;
+  cursor: pointer;
+  box-shadow: 0 0 10px var(--phosphor-green-glow);
+  transition: all 0.15s ease;
+}
+
+.slider-tactical::-webkit-slider-thumb:hover {
+  background: rgba(0, 255, 65, 0.2);
+  transform: scale(1.1);
+}
+
+.slider-tactical::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  background: var(--bg-void);
+  border: 2px solid var(--phosphor-green);
+  border-radius: 2px;
+  cursor: pointer;
+  box-shadow: 0 0 10px var(--phosphor-green-glow);
+}
+
+/* Cyan variant for data displays */
+.slider-tactical-cyan {
+  background: rgba(0, 212, 255, 0.15);
+}
+
+.slider-tactical-cyan::-webkit-slider-thumb {
+  border-color: var(--data-cyan);
+  box-shadow: 0 0 10px var(--data-cyan-glow);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   CHEMICAL HAZARD CARDS
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.chemical-card {
+  position: relative;
+  padding: 12px;
+  background: rgba(10, 5, 20, 0.8);
+  border: 1px solid rgba(168, 85, 247, 0.4);
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  overflow: hidden;
+  color: #e8e0f0;
+}
+
+.chemical-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 100%;
+  background: var(--data-purple);
+  opacity: 0.5;
+  transition: all 0.2s ease;
+}
+
+.chemical-card:hover {
+  background: rgba(168, 85, 247, 0.08);
+  border-color: rgba(168, 85, 247, 0.4);
+}
+
+.chemical-card:hover::before {
+  opacity: 1;
+  box-shadow: 0 0 10px var(--data-purple-glow);
+}
+
+.chemical-card-active {
+  background: rgba(168, 85, 247, 0.12);
+  border-color: var(--data-purple);
+  box-shadow:
+    0 0 20px rgba(168, 85, 247, 0.2),
+    inset 0 0 30px rgba(168, 85, 247, 0.05);
+}
+
+.chemical-card-active::before {
+  opacity: 1;
+  box-shadow: 0 0 15px var(--data-purple-glow);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   CHAT INTERFACE
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.chat-message-ai {
+  background: linear-gradient(135deg, rgba(0, 212, 255, 0.08) 0%, rgba(0, 212, 255, 0.02) 100%);
+  border: 1px solid rgba(0, 212, 255, 0.2);
+  border-left: 3px solid var(--data-cyan);
+  border-radius: 0 6px 6px 0;
+}
+
+.chat-message-user {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px 0 0 6px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SCROLLBAR STYLING
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 255, 65, 0.3);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 255, 65, 0.5);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   UTILITY ANIMATIONS
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes border-trace {
+  0% { clip-path: inset(0 100% 100% 0); }
+  25% { clip-path: inset(0 0 100% 0); }
+  50% { clip-path: inset(0 0 0 0); }
+  75% { clip-path: inset(0 0 0 100%); }
+  100% { clip-path: inset(0 100% 0 100%); }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.4s ease-out forwards;
+}
+
+/* Stagger children animations */
+.stagger-children > * {
+  opacity: 0;
+  animation: fade-in-up 0.3s ease-out forwards;
+}
+
+.stagger-children > *:nth-child(1) { animation-delay: 0.05s; }
+.stagger-children > *:nth-child(2) { animation-delay: 0.1s; }
+.stagger-children > *:nth-child(3) { animation-delay: 0.15s; }
+.stagger-children > *:nth-child(4) { animation-delay: 0.2s; }
+.stagger-children > *:nth-child(5) { animation-delay: 0.25s; }
+.stagger-children > *:nth-child(6) { animation-delay: 0.3s; }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   GRID BACKGROUND
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.tactical-grid {
+  background-image:
+    linear-gradient(rgba(0, 255, 65, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 255, 65, 0.03) 1px, transparent 1px);
+  background-size: 50px 50px;
 }
